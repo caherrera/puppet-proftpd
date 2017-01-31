@@ -12,7 +12,7 @@
 #
 class proftpd::params {
 
-  $use_ipv6		= 'on'
+  $use_ipv6		= 'off'
   $ident_lookups	= 'off'
   $server_name		= ''
   $server_type		= 'standalone'
@@ -33,14 +33,18 @@ class proftpd::params {
   $group		= 'nogroup'
   $umask		= '022 022'
   $allow_overwrite	= 'on'
+  $default_root = '~'
+  $require_valid_shell = false
+  $passive_ports = "49152 65534"
+  $masquerade_address   = false
 
   $sql_engine           = 'off'
   $sql_backend          = 'mysql'
-  $sql_host		= 'dbhost'
+  $sql_host		          = 'dbhost'
   $sql_dbname           = 'dbname'
   $sql_username         = 'dbusername'
   $sql_password         = 'dbpassword'
-  
+
   $tls_engine           = 'off'
   $tls_log              = '/var/log/proftpd/tls.log'
   $tls_protocol         = 'SSLv23'
@@ -51,13 +55,16 @@ class proftpd::params {
   $tls_verifyclient     = 'off'
   $tls_required         = 'off'
   $tls_renegotiate      = 'required off'
+  $tls_memcache         = 'off'
 
   $ldap_engine          = 'off'
   $ldap_usetls          = 'on'
   $ldap_server          = 'ldap://ldap.example.com'
   $ldap_binddn          = '"cn=admin,dc=example,dc=com" "admin_password"'
   $ldap_users           = 'dc=users,dc=example,dc=com (uid=%u) (uidNumber=%u)'
-  
+
+  $sftp_pam             = 'off'
+
 
   case $::operatingsystem {
     "Ubuntu": {

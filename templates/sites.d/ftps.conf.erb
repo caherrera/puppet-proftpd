@@ -1,0 +1,44 @@
+<VirtualHost <%= @ipaddress %>>
+
+Include /etc/proftpd/users.d/<%= @vhost_name %>.conf
+
+ServerAdmin                     root@localhost
+ServerName                      "ftps-intern.cegeka.be"
+ServerIdent                     on "interne Secure FTP server "
+
+<IfModule mod_tls.c>
+TLSEngine                       on
+TLSRequired                     on
+TLSLog                          /var/log/proftpd/secureftp-intern.log
+TLSCipherSuite                  ALL:!ADH
+TLSOptions                      NoCertRequest
+TLSCACertificateFile            /etc/proftpd/ssl/root-ca.crt
+TLSRSACertificateFile           <%= @tls_rsa_cert_file %>
+TLSRSACertificateKeyFile        <%= @tls_rsa_cert_key_file %>
+TLSCertificateChainFile         /etc/proftpd/ssl/globalsign-intermediate.crt
+TLSVerifyClient                 off
+</IfModule>
+
+DisplayLogin                    welcome.msg
+
+PathDenyFilter                  \.ftp[a-z]+$
+
+Port                            <%= @port %>
+
+Umask                           0006 0007
+
+DeleteAbortedStores             on
+MaxClientsPerHost               10
+MaxLoginAttempts                3
+DefaultRoot                     ~
+AllowOverwrite                  on
+
+PassivePorts                    60000 65535
+
+TimesGMT off
+
+TransferLog <%= @logdir %>/proftpd/ftps/<%= @vhost_name %>_xferlog
+ExtendedLog <%= @logdir %>/proftpd/ftps/<%= @vhost_name %>_commands.log all
+WtmpLog                         off
+
+</VirtualHost>

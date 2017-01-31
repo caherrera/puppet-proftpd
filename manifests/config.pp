@@ -45,6 +45,11 @@ class proftpd::config(
   $transfer_log       = $proftpd::params::transfer_log,
   $system_log         = $proftpd::params::system_log,
 
+  $default_root       = $proftpd::params::default_root,
+  $require_valid_shell= $proftpd::params::require_valid_shell,
+  $passive_ports      = $proftpd::params::passive_ports,
+  $masquerade_address = $proftpd::params::masquerade_address,
+
   $tls_engine         = $proftpd::params::tls_engine,
   $tls_log            = $proftpd::params::tls_log,
   $tls_protocol       = $proftpd::params::tls_protocol,
@@ -54,6 +59,7 @@ class proftpd::config(
   $tls_verifyclient   = $proftpd::params::tls_verifyclient,
   $tls_required       = $proftpd::params::tls_required,
   $tls_renegotiate    = $proftpd::params::tls_renegotiate,
+  $tls_memcache       = $proftpd::params::tls_memcache,
 
   $sql_backend        = $proftpd::params::sql_backend,
   $sql_engine         = $proftpd::params::sql_engine,
@@ -67,6 +73,9 @@ class proftpd::config(
   $ldap_server        = $proftpd::params::ldap_server,
   $ldap_binddn        = $proftpd::params::ldap_binddn,
   $ldap_users         = $proftpd::params::ldap_users,
+
+  $sftp_pam           = $proftpd::params::sftp_pam,
+
 ) inherits proftpd::params {
 
   File {
@@ -88,6 +97,8 @@ class proftpd::config(
     recurse => true,
     mode => '0644',
   }
+  file { "$basedir/sites.d": ensure => 'directory' }
+  file { "$basedir/users.d": ensure => 'directory' }
   file { "$basedir/mods-enabled": ensure => 'directory' }
   file { "$basedir/tls.conf": ensure => 'absent' }
   file { "$basedir/mods-available/mod_tls.conf":
@@ -122,22 +133,33 @@ class proftpd::config(
   proftpd::mods {'ratio': ensure => 'present' }
   proftpd::mods {'site_misc': ensure => 'present' }
   proftpd::mods {'sftp': ensure => 'present' }
-  proftpd::mods {'sftp_pam': ensure => 'present' }
+  #proftpd::mods {'sftp_pam': ensure => 'present' }
   proftpd::mods {'facl': ensure => 'present' }
-  proftpd::mods {'unique_id': ensure => 'present' }
+  proftpd::mods {'unique_id': ensure => 'absent' }
   proftpd::mods {'copy': ensure => 'present' }
   proftpd::mods {'deflate': ensure => 'present' }
   proftpd::mods {'ifversion': ensure => 'present' }
-  proftpd::mods {'tls_memcache': ensure => 'present' }
   proftpd::mods {'ifsession': ensure => 'present' }
+  proftpd::mods {'vroot': ensure => 'present' }
 
 
 
 
+  if $sftp_pam == 'on' {
+    proftpd::mods {'sftp_pam': ensure => 'present' }
+  } else {
+    proftpd::mods {'sftp_pam': ensure => 'absent' }
+  }
   if $tls_engine == 'on' {
     proftpd::mods {'tls': ensure => 'present' }
   } else {
     proftpd::mods {'tls': ensure => 'absent' }
+  }
+
+  if $tls_memcache == 'on' {
+    proftpd::mods {'tls_memcache': ensure => 'present' }
+  } else {
+    proftpd::mods {'tls_memcache': ensure => 'absent' }
   }
 
   if $sql_engine == 'on' {

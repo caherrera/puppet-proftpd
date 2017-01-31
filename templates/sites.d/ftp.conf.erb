@@ -1,0 +1,31 @@
+<VirtualHost <%= @ipaddress %>>
+
+Include /etc/proftpd/users.d/<%= @vhost_name %>.conf
+
+ServerName          "<%= @server_name %>"
+ServerIdent         on "<%= @server_ident %>"
+ServerAdmin         <%= @server_admin %>
+
+DisplayLogin 				welcome.msg
+
+PathDenyFilter      \.ftp[a-z]+$
+
+Port                <%= @port %>
+
+Umask                           0006 0007
+
+DeleteAbortedStores             on
+MaxClientsPerHost               <%= @max_clients %>
+MaxLoginAttempts                <%= @max_loginattempts %>
+DefaultRoot                     <%= @default_root %>
+AllowOverwrite                  <%= @allowoverwrite %>
+
+PassivePorts                    <%= @passive_ports %>
+
+TimesGMT off
+
+TransferLog <%= @logdir %>/proftpd/ftp/<%= @vhost_name %>_xferlog
+ExtendedLog <%= @logdir %>/proftpd/ftp/<%= @vhost_name %>_commands.log all
+WtmpLog                         off
+
+</VirtualHost>

@@ -40,11 +40,12 @@ class proftpd::server (
     $service_ensure = 'stopped'
   }
 
-  service { 'proftpd':
-    name     => $service_name,
-    ensure   => $service_ensure,
-    enable   => $enabled,
-    require  => Package['proftpd-server'],
-  }
+  include proftpd::service
+  # service { 'proftpd':
+  #   name     => $service_name,
+  #   ensure   => $service_ensure,
+  #   enable   => $enabled,
+  #   require  => Package['proftpd-server'],
+  # }
 
 }

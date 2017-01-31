@@ -1,0 +1,47 @@
+<VirtualHost <%= @ipaddress %>>
+
+Include /etc/proftpd/users.d/<%= @vhost_name %>.conf
+
+ServerName          "<%= @server_name %>"
+ServerIdent         on "<%= @server_ident %>"
+ServerAdmin         <%= @server_admin %>
+
+DisplayLogin        welcome.msg
+
+PathDenyFilter      \.ftp[a-z]+$
+
+Port                <%= @port %>
+
+SFTPEngine          on
+SFTPLog             <%= @logdir %>/proftpd/sftp/sftp.log
+
+SFTPHostKey         /etc/ssh/ssh_host_dsa_key
+SFTPHostKey         /etc/ssh/ssh_host_rsa_key
+SFTPCompression     delayed
+
+<% if @sftprekey -%>
+SFTPRekey           <%= @sftprekey %>
+<% end -%>
+<% if @timeoutidle -%>
+TimeoutIdle         <%= @timeoutidle %>
+<% end -%>
+<% @sftp_client_match.each do |val| -%>
+SFTPClientMatch     <%= val %>
+<% end -%>
+
+Umask               0006 0007
+
+DeleteAbortedStores on
+MaxClientsPerHost   <%= @max_clients %>
+MaxLoginAttempts    <%= @max_loginattempts %>
+DefaultRoot         <%= @default_root %>
+AllowOverwrite      <%= @allowoverwrite %>
+
+TimesGMT            off
+
+TransferLog         <%= @logdir %>/proftpd/sftp/<%= @vhost_name %>_xferlog
+ExtendedLog         <%= @logdir %>/proftpd/sftp/<%= @vhost_name %>_commands.log all
+WtmpLog             off
+
+
+</VirtualHost>
