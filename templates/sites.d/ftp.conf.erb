@@ -22,6 +22,12 @@ AllowOverwrite                  <%= @allowoverwrite %>
 
 PassivePorts                    <%= @passive_ports %>
 
+<% if @masquerade_address == false %>
+# MasqueradeAddress		1.2.3.4
+<% else %>
+MasqueradeAddress       <%=@masquerade_address%>
+<% end %>
+
 TimesGMT off
 
 TransferLog <%= @logdir %>/proftpd/ftp/<%= @vhost_name %>_xferlog
