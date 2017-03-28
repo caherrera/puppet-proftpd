@@ -1,0 +1,14 @@
+{
+  "name": "puppet-proftpd",
+  "version": "0.1.2",
+  "author": "Carlos Herrera",
+  "summary": "Puppet module for ProFTPd. This is a fork of https://github.com/adamjlow/adamjlow-proftpd",
+  "license": "Apache 2.0",
+  "source": "git@github.com:caherrera/puppet-proftpd.git",
+  "project_page": "https://github.com/caherrera/puppet-proftpd",
+  "issues_url": "https://github.com/caherrera/puppet-proftpd",
+  "dependencies": [
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
+  ]
+}
+
