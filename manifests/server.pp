@@ -24,8 +24,7 @@ class proftpd::server (
 
   Class['proftpd::server'] -> Class['proftpd::config']
 
-  $config_class = {}
-  $config_class['proftpd::config'] = $config_hash
+  $config_class = { 'proftpd::config' => $config_hash }
 
   create_resources( 'class', $config_class )
 
