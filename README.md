@@ -42,9 +42,9 @@ Apache license v2.0
 Contact
 -------
 
-Adam J. Low <github@adamlow.net>
+Carlos Herrera <caherrera@gmail.com>
 
 Support
 -------
 
-Please log tickets and issues at [http://github.com/adamjlow/adamjlow-proftpd](http://github.com/adamjlow/adamjlow-proftpd)
+Please log tickets and issues at [https://github.com/caherrera/puppet-proftpd/issues](https://github.com/caherrera/puppet-proftpd/issues)
