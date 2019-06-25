@@ -18,7 +18,7 @@ e following module which provides this functionality:
 
 Usage
 -------
-
+```
 node 'server.domain.com' {
   class { proftpd::server:
     config_hash => {
@@ -33,7 +33,7 @@ node 'server.domain.com' {
     },
   }
 }
-
+```
 License
 -------
 
