@@ -1,6 +1,6 @@
 {
   "name": "puppet-proftpd",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "author": "Carlos Herrera",
   "summary": "Puppet module for ProFTPd. This is a fork of https://github.com/adamjlow/adamjlow-proftpd",
   "license": "Apache 2.0",
