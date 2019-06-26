@@ -27,7 +27,7 @@ define proftpd::user (
 
   # if $import {
 
-    exec { "import-$sql_dbname":
+    exec { "import-$sql_dbname-$user":
       command => "$mysql -e \"$sql\"",
       path    => '/usr/bin:/usr/sbin:/bin',
       unless  => $unless
