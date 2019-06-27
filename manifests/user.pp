@@ -16,23 +16,20 @@ define proftpd::user (
   $shell           = '/sbin/noshell'
 ) {
 
-  $mysql = "mysql -h${sql_host} -u${admin_user} -p${admin_pass} ${sql_dbname}"
-  $chk = "count(*) as chk"
-  $chktable = "ftpuser"
-  $mysql_query = "$mysql -e \"select $chk from $chktable where userid='$user' > 0;\"  "
-  $unless = "[ \"$($mysql_query | sed 1d )\" == \"0\" ] && exit 0 || exit 1"
+  $mysql = "/usr/bin/mysql -h${sql_host} -u${admin_user} -p${admin_pass} ${sql_dbname}"
+  $mysql_query = "$mysql -e \"show tables like '$sql_user_table' ;\"  "
+  $unless = "test $($mysql_query 2>/dev/null | sed 1d) -eq 0 "
 
-  $sql = "insert into $sql_user_table (userid,passwdcrypt,uid,gid,homedir,shell) values ('$user','$password','$uid','$gid
-    ','$homedir','$shell');"
 
-  # if $import {
+  $sql = join(["REPLACE into $sql_user_table (userid,passwdcrypt,uid,gid,homedir,shell)",
+    " values ('${user}','${password}','${uid}','${gid}','${homedir}','${shell}');"],' ')
 
-    exec { "import-$sql_dbname-$user":
-      command => "$mysql -e \"$sql\"",
-      path    => '/usr/bin:/usr/sbin:/bin',
-      unless  => $unless
-    }
-  # }
+
+  exec { "import-$sql_dbname-$user":
+    command => "$mysql -e \"$sql\"",
+    path    => '/usr/bin:/usr/sbin:/bin',
+    unless  => $unless
+  }
 
 
 }

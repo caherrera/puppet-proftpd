@@ -17,10 +17,8 @@ class proftpd::importdb (
 
   }
   $mysql = "mysql -h${sql_host} -u${admin_user} -p${admin_pass} ${sql_dbname}"
-  $chk = "sum(DATA_LENGTH+INDEX_LENGTH) as chk"
-  $chktable = "information_schema.TABLES"
-  $mysql_query = "$mysql -e \"select $chk from $chktable where TABLE_SCHEMA='$sql_dbname' and TABLE_ROWS > 0;\"  "
-  $unless="[ \"$($mysql_query | sed 1d )\" == \"0\" ] && exit 0 || exit 1"
+  $mysql_query = "$mysql -e \"show tables like '$sql_user_table' ;\"  "
+  $unless = "test $($mysql_query 2>/dev/null | sed 1d) -neq 0 "
 
   if $import {
 
