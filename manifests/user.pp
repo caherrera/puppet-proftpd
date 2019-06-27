@@ -19,7 +19,7 @@ define proftpd::user (
   $mysql = "mysql -h${sql_host} -u${admin_user} -p${admin_pass} ${sql_dbname}"
   $chk = "count(*) as chk"
   $chktable = "ftpuser"
-  $mysql_query = "$mysql -e \"select $chk from $chktable where userid=$user > 0;\"  "
+  $mysql_query = "$mysql -e \"select $chk from $chktable where userid='$user' > 0;\"  "
   $unless = "[ \"$($mysql_query | sed 1d )\" == \"0\" ] && exit 0 || exit 1"
 
   $sql = "insert into $sql_user_table (userid,passwdcrypt,uid,gid,homedir,shell) values ('$user','$password','$uid','$gid
